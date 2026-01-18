@@ -1,11 +1,13 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -std=c++17
+CFLAGS = -Wall -Wextra -Werror -std=c++20
 GCOVFLAGS = -fprofile-arcs -ftest-coverage
 #LTEST = -lgtest -lgtest_main
-TEST_SRC = tests/*.cc
+TEST_SRC = libraries/tests/*.cc
 EXE = test
 BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
+GRAPH_INCLUDE = -I libraries/.
+GRAPH_SRC = libraries/graph.cc
 
 ifeq ($(SYSTEM), Linux)
 	OPEN_CMD = xdg-open
@@ -19,12 +21,18 @@ endif
 
 all: clean test
 
-test: clean 
-	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) -o $(EXE) -pthread 
+test: clean libgraph
+	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) -L libraries -lgraph -o $(EXE) -pthread $(GRAPH_INCLUDE)
 	./$(EXE) 
 
+libgraph:
+	$(CC) $(CFLAGS) $(GRAPH_SRC) -c -o libraries/graph.o -pthread $(GRAPH_INCLUDE)
+	ar rcs libraries/libgraph.a libraries/graph.o
+	rm -rf libraries/graph.o
+
 clean:
-	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM
+	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \
+	libraries/*.a
 
 gcov_flag:
 	$(eval CFLAGS += --coverage $(GCOVFLAGS))
