@@ -1,6 +1,7 @@
 #include <graph.h>
 
 #include <fstream>
+#include <iostream>
 
 bool Graph::LoadGraphFromFile(const std::string& filename) {
   std::ifstream file(filename);
@@ -10,6 +11,7 @@ bool Graph::LoadGraphFromFile(const std::string& filename) {
 
   size_t size = 0;
   file >> size;
+
   if (file.fail() || size <= 0) {
     return false;
   }
