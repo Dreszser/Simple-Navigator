@@ -8,6 +8,7 @@ BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
 GRAPH_INCLUDE = -I libraries/.
 GRAPH_SRC = libraries/graph.cc
+GRAPH_LIB = libraries/s21_graph.a
 
 ifeq ($(SYSTEM), Linux)
 	OPEN_CMD = xdg-open
@@ -21,14 +22,15 @@ endif
 
 all: clean test
 
-test: clean libgraph
-	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) -L libraries -lgraph -o $(EXE) -pthread $(GRAPH_INCLUDE)
+test: clean s21_graph
+	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) -o $(EXE) -pthread $(GRAPH_INCLUDE)
 	./$(EXE) 
 
-libgraph:
+s21_graph:
 	$(CC) $(CFLAGS) $(GRAPH_SRC) -c -o libraries/graph.o -pthread $(GRAPH_INCLUDE)
-	ar rcs libraries/libgraph.a libraries/graph.o
+	ar rcs $(GRAPH_LIB) libraries/graph.o
 	rm -rf libraries/graph.o
+	ranlib $(GRAPH_LIB)
 
 clean:
 	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \

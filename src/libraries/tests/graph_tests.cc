@@ -38,12 +38,13 @@ TEST(GraphLoader, TruncatedFileFails) {
       graph.LoadGraphFromFile("libraries/tests/data/invalid_truncated.txt"));
 }
 
-// TEST(GraphLoader, MatrixIsLoadedCorrectly) {
-//   Graph graph;
-//   ASSERT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
+TEST(GraphLoader, MatrixIsLoadedCorrectly) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/valid_graph_1.txt"));
 
-//   const auto& m = graph.GetAdjacencyMatrix();
-//   ASSERT_EQ(m.size(), 3u);
-//   EXPECT_EQ(m[0][1], 1);
-//   EXPECT_EQ(m[1][2], 3);
-// }
+  const auto& m = graph.GetAdjecencyMatrix();
+  ASSERT_EQ(m.size(), 3u);
+  EXPECT_EQ(m[0][1], 1);
+  EXPECT_EQ(m[1][2], 3);
+}
