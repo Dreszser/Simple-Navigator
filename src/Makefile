@@ -23,11 +23,11 @@ endif
 all: clean test
 
 test: clean s21_graph
-	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) -o $(EXE) -pthread $(GRAPH_INCLUDE)
+	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) -o $(EXE) $(GRAPH_INCLUDE)
 	./$(EXE) 
 
 s21_graph:
-	$(CC) $(CFLAGS) $(GRAPH_SRC) -c -o libraries/graph.o -pthread $(GRAPH_INCLUDE)
+	$(CC) $(CFLAGS) -c $(GRAPH_SRC) $(GRAPH_INCLUDE) -o libraries/graph.o
 	ar rcs $(GRAPH_LIB) libraries/graph.o
 	rm -rf libraries/graph.o
 	ranlib $(GRAPH_LIB)

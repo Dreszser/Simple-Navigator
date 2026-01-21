@@ -44,7 +44,7 @@ TEST(GraphLoader, MatrixIsLoadedCorrectly) {
       graph.LoadGraphFromFile("libraries/tests/data/valid_graph_1.txt"));
 
   const auto& m = graph.GetAdjecencyMatrix();
-  ASSERT_EQ(m.size(), 3u);
+  ASSERT_EQ(graph.Size(), 3u);
   EXPECT_EQ(m[0][1], 1);
   EXPECT_EQ(m[1][2], 3);
 }

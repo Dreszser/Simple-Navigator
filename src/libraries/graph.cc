@@ -34,6 +34,16 @@ bool Graph::LoadGraphFromFile(const std::string& filename) {
   return true;
 }
 
+bool Graph::ExportGraphToDot(const std::string& filename) {
+  if(adjacency_matrix_.empty()) return false;
+
+  std::ofstream file(filename);
+
+  if(!file.is_open()) return false;
+  
+}
+
+
 bool Graph::ValidateGraph(const std::vector<std::vector<int>>& adj_matrix) {
   size_t size = adj_matrix.size();
 
@@ -64,3 +74,5 @@ bool Graph::ValidateGraph(const std::vector<std::vector<int>>& adj_matrix) {
 const std::vector<std::vector<int>>& Graph::GetAdjecencyMatrix() const {
   return adjacency_matrix_;
 }
+
+size_t Graph::Size() const { return adjacency_matrix_.size(); }
