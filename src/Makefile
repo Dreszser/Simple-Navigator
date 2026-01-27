@@ -34,7 +34,7 @@ s21_graph:
 
 clean:
 	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \
-	libraries/*.a
+	libraries/*.a libraries/tests/output/*
 
 gcov_flag:
 	$(eval CFLAGS += --coverage $(GCOVFLAGS))

@@ -35,14 +35,28 @@ bool Graph::LoadGraphFromFile(const std::string& filename) {
 }
 
 bool Graph::ExportGraphToDot(const std::string& filename) {
-  if(adjacency_matrix_.empty()) return false;
+  if (adjacency_matrix_.empty()) return false;
 
   std::ofstream file(filename);
 
-  if(!file.is_open()) return false;
-  
-}
+  if (!file.is_open()) return false;
 
+  file << "graph G {\n";
+
+  const size_t size = adjacency_matrix_.size();
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = i + 1; j < size; ++j) {
+      const int weight = adjacency_matrix_[i][j];
+      if (weight != 0) {
+        file << "\t" << (i + 1) << " -- " << (j + 1) << " [label=" << weight
+             << "]\n";
+      }
+    }
+  }
+
+  file << "}\n";
+  return true;
+}
 
 bool Graph::ValidateGraph(const std::vector<std::vector<int>>& adj_matrix) {
   size_t size = adj_matrix.size();
