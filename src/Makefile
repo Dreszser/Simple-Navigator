@@ -1,6 +1,5 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -std=c++20
-GCOVFLAGS = -fprofile-arcs -ftest-coverage
+CFLAGS = -Wall -Wextra -Werror -std=c++20 --coverage
 
 TEST_SRC = libraries/tests/*.cc
 EXE = test
@@ -44,23 +43,14 @@ s21_graph_algorithms:
 
 clean:
 	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \
-	libraries/*.a libraries/tests/output/*
+	libraries/*.a libraries/tests/output/* libraries/*.gc*
 
-gcov_flag:
-	$(eval CFLAGS += --coverage $(GCOVFLAGS))
-
-gcov_report: clean gcov_flag test
-ifeq ($(SYSTEM), Linux)
-	lcov --no-external -c -d . -o line_coverage.info
-	lcov --remove line_coverage.info "*/s21_containers/tree/*" -o coverage.info
-	genhtml coverage.info -o report
-	open report/index.html
-else
-	lcov --no-external --ignore-errors inconsistent -c -d . -o line_coverage.info
-	lcov --remove line_coverage.info "*/s21_containers/tree/*" --ignore-errors inconsistent -o coverage.info
-	genhtml --ignore-errors inconsistent --ignore-errors corrupt coverage.info -o report
-	open report/index.html
-endif
+gcov_report: clean test
+	mkdir -p report
+	gcovr --exclude 'libraries/tests/.*'  --exclude 's21_containers/.*' \
+	--exclude-unreachable-branches --exclude-throw-branches --html-details report/index.html \
+	--html-medium-threshold 80 --html-high-threshold 95 --html-title "CPP_Simple_Navigator coverage report"
+	rm -rf *.gc* libraries/*.gc*
 
 style:
 	@find s21_containers \( -name "*.tpp*" -or -name "*.h" \) -exec clang-format --style=google -i {} +
