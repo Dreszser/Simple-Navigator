@@ -71,9 +71,9 @@ TEST(GraphExport, SimpleGraphExport) {
 
   const std::string expected =
       "graph G {\n"
-      "\t1 -- 2 [label=1]\n"
-      "\t1 -- 3 [label=2]\n"
-      "\t2 -- 3 [label=3]\n"
+      "  1 -- 2 [label=1]\n"
+      "  1 -- 3 [label=2]\n"
+      "  2 -- 3 [label=3]\n"
       "}\n";
 
   EXPECT_EQ(dot, expected);

@@ -1,14 +1,18 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -std=c++20
 GCOVFLAGS = -fprofile-arcs -ftest-coverage
-#LTEST = -lgtest -lgtest_main
+
 TEST_SRC = libraries/tests/*.cc
 EXE = test
 BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
-GRAPH_INCLUDE = -I libraries/.
+GRAPH_INCLUDE = -I libraries/. -I .
+
 GRAPH_SRC = libraries/graph.cc
 GRAPH_LIB = libraries/s21_graph.a
+
+GRAPH_ALG_SRC = libraries/graph_algorithms.cc
+GRAPH_ALG_LIB = libraries/s21_graph_algorithms.a
 
 ifeq ($(SYSTEM), Linux)
 	OPEN_CMD = xdg-open
@@ -22,8 +26,8 @@ endif
 
 all: clean test
 
-test: clean s21_graph
-	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) -o $(EXE) $(GRAPH_INCLUDE)
+test: clean s21_graph s21_graph_algorithms
+	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(EXE) $(GRAPH_INCLUDE)
 	./$(EXE) 
 
 s21_graph:
@@ -31,6 +35,12 @@ s21_graph:
 	ar rcs $(GRAPH_LIB) libraries/graph.o
 	rm -rf libraries/graph.o
 	ranlib $(GRAPH_LIB)
+
+s21_graph_algorithms:
+	$(CC) $(CFLAGS) -c $(GRAPH_ALG_SRC) $(GRAPH_INCLUDE) -o libraries/graph_algorithms.o
+	ar rcs $(GRAPH_ALG_LIB) libraries/graph_algorithms.o
+	rm -rf libraries/graph_algorithms.o
+	ranlib $(GRAPH_ALG_LIB)
 
 clean:
 	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \

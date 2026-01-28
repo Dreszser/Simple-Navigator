@@ -48,7 +48,7 @@ bool Graph::ExportGraphToDot(const std::string& filename) {
     for (size_t j = i + 1; j < size; ++j) {
       const int weight = adjacency_matrix_[i][j];
       if (weight != 0) {
-        file << "\t" << (i + 1) << " -- " << (j + 1) << " [label=" << weight
+        file << "  " << (i + 1) << " -- " << (j + 1) << " [label=" << weight
              << "]\n";
       }
     }
