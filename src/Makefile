@@ -23,7 +23,7 @@ else
 	$(error Unsupported system: $(SYSTEM))
 endif
 
-all: clean test
+all: clean test clean_gcovr
 
 test: clean s21_graph s21_graph_algorithms
 	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(EXE) $(GRAPH_INCLUDE)
@@ -44,6 +44,9 @@ s21_graph_algorithms:
 clean:
 	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \
 	libraries/*.a libraries/tests/output/* libraries/*.gc*
+
+clean_gcovr:
+	rm -rf *.gc* libraries/*.gc*
 
 gcov_report: clean test
 	mkdir -p report

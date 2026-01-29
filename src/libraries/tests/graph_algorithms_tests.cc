@@ -6,14 +6,6 @@
 #include "graph.h"
 #include "graph_algorithms.h"
 
-bool AreVectorsEqual(const std::vector<int>& a, const std::vector<int>& b) {
-  if (a.size() != b.size()) return false;
-  for (size_t i = 0; i < a.size(); ++i) {
-    if (a[i] != b[i]) return false;
-  }
-  return true;
-}
-
 TEST(AlgorithmsTests, BFSFailTest1) {
   Graph graph;
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, 4), std::vector<int>());
@@ -29,8 +21,7 @@ TEST(AlgorithmsTests, BFSSimpleTest1) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {1, 2, 3, 4, 5};
   const int start_vertex = 1;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, BFSSimpleTest2) {
@@ -39,8 +30,7 @@ TEST(AlgorithmsTests, BFSSimpleTest2) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {2, 1, 3, 5, 4};
   const int start_vertex = 2;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, BFSSimpleTest3) {
@@ -49,8 +39,7 @@ TEST(AlgorithmsTests, BFSSimpleTest3) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {3, 1, 2, 4, 5};
   const int start_vertex = 3;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, BFSSimpleTest4) {
@@ -59,8 +48,7 @@ TEST(AlgorithmsTests, BFSSimpleTest4) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {4, 1, 3, 5, 2};
   const int start_vertex = 4;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, BFSSimpleTest5) {
@@ -69,8 +57,7 @@ TEST(AlgorithmsTests, BFSSimpleTest5) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {5, 1, 2, 3, 4};
   const int start_vertex = 5;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, DFSFailTest1) {
@@ -88,8 +75,7 @@ TEST(AlgorithmsTests, DFSSimpleTest1) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {1, 2, 3, 4, 5};
   const int start_vertex = 1;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, DFSSimpleTest2) {
@@ -98,8 +84,7 @@ TEST(AlgorithmsTests, DFSSimpleTest2) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {2, 1, 3, 4, 5};
   const int start_vertex = 2;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, DFSSimpleTest3) {
@@ -108,8 +93,7 @@ TEST(AlgorithmsTests, DFSSimpleTest3) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {3, 1, 2, 5, 4};
   const int start_vertex = 3;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, DFSSimpleTest4) {
@@ -118,8 +102,7 @@ TEST(AlgorithmsTests, DFSSimpleTest4) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {4, 1, 2, 3, 5};
   const int start_vertex = 4;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
 TEST(AlgorithmsTests, DFSSimpleTest5) {
@@ -128,6 +111,5 @@ TEST(AlgorithmsTests, DFSSimpleTest5) {
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
   const std::vector<int> check = {5, 1, 2, 3, 4};
   const int start_vertex = 5;
-  EXPECT_TRUE(AreVectorsEqual(
-      GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check));
+  EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
