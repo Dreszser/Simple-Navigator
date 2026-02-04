@@ -12,6 +12,10 @@ class GraphAlgorithms {
                                            int start_vertex);
   static std::vector<int> BreadthFirstSearch(const Graph& graph,
                                              int start_vertex);
+  static int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
+                                            int vertex2);
+  static std::vector<std::vector<int>> GetShortestPathsBetweenAllVertices(
+      const Graph& graph);
 };
 
 #endif  // S21_GRAPH_ALGORITHMS_H_

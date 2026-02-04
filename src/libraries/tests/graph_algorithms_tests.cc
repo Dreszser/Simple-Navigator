@@ -113,3 +113,71 @@ TEST(AlgorithmsTests, DFSSimpleTest5) {
   const int start_vertex = 5;
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
+
+TEST(AlgorithmsTests, DijkstraFailTest1) {
+  Graph graph;
+  const int fail_code = -1;
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 1),
+            fail_code);
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 0, 1),
+            fail_code);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 0),
+            fail_code);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 6, 1),
+            fail_code);
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 6),
+            fail_code);
+}
+
+TEST(AlgorithmsTests, DijkstraFailTest2) {
+  Graph graph;
+  const int fail_code = -1;
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/overflow_graph.txt"));
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 3),
+            fail_code);
+}
+
+TEST(AlgorithmsTests, DijkstrasTest1) {
+  Graph graph;
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  const int check = 2;
+  const int start_vertex = 5;
+  const int finish_vertex = 1;
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, start_vertex,
+                                                            finish_vertex),
+            check);
+}
+
+TEST(AlgorithmsTests, DijkstrasTest2) {
+  Graph graph;
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  const int check = 3;
+  const int start_vertex = 2;
+  const int finish_vertex = 3;
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, start_vertex,
+                                                            finish_vertex),
+            check);
+}
+
+TEST(AlgorithmsTests, DijkstrasTest3) {
+  Graph graph;
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  const int check = 2;
+  const int start_vertex = 2;
+  const int finish_vertex = 4;
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, start_vertex,
+                                                            finish_vertex),
+            check);
+}
+
+/* 0, 1, 2, 3, 2,
+1, 0, 3, 2, 1,
+2, 3, 0, 3, 4,
+3, 2, 3, 0, 1,
+2, 1, 4, 1, 0, */
