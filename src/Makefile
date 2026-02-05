@@ -50,7 +50,7 @@ clean_gcovr:
 
 gcov_report: clean test
 	mkdir -p report
-	gcovr --exclude 'libraries/tests/.*'  --exclude 's21_containers/.*' \
+	gcovr --exclude 'libraries/tests/.*'  --exclude 's21_containers/.*' --exclude '.*\.h' \
 	--exclude-unreachable-branches --exclude-throw-branches --html-details report/index.html \
 	--html-medium-threshold 80 --html-high-threshold 95 --html-title "CPP_Simple_Navigator coverage report"
 	rm -rf *.gc* libraries/*.gc*

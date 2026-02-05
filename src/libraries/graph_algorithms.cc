@@ -163,3 +163,6 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) {
   }
   return distance;
 }
+
+std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(
+    const Graph& graph) {}

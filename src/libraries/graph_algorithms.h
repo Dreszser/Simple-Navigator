@@ -16,6 +16,7 @@ class GraphAlgorithms {
                                             int vertex2);
   static std::vector<std::vector<long long>> GetShortestPathsBetweenAllVertices(
       const Graph& graph);
+  static std::vector<std::vector<int>> GetLeastSpanningTree(const Graph& graph);
 };
 
 #endif  // S21_GRAPH_ALGORITHMS_H_
