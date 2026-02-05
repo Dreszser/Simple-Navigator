@@ -14,7 +14,7 @@ class GraphAlgorithms {
                                              int start_vertex);
   static int GetShortestPathBetweenVertices(const Graph& graph, int vertex1,
                                             int vertex2);
-  static std::vector<std::vector<int>> GetShortestPathsBetweenAllVertices(
+  static std::vector<std::vector<long long>> GetShortestPathsBetweenAllVertices(
       const Graph& graph);
 };
 

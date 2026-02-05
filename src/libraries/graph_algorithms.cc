@@ -2,11 +2,11 @@
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
                                                    int start_vertex) {
-  std::vector<int> result;
+  std::vector<int> distance;
   const size_t size = graph.Size();
   if (size == 0 || start_vertex < 1 ||
       static_cast<size_t>(start_vertex) > size) {
-    return result;
+    return distance;
   }
 
   const auto& matrix = graph.GetAdjecencyMatrix();
@@ -25,7 +25,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
     if (visited[v]) continue;
     visited[v] = true;
 
-    result.push_back(v + 1);
+    distance.push_back(v + 1);
     for (int u = static_cast<int>(size) - 1; u >= 0; --u) {
       if (matrix[v][u] != 0 && !visited[u]) {
         stack.push(u);
@@ -33,16 +33,16 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
     }
   }
 
-  return result;
+  return distance;
 }
 
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
                                                      int start_vertex) {
-  std::vector<int> result;
+  std::vector<int> distance;
   const size_t size = graph.Size();
   if (size == 0 || start_vertex < 1 ||
       static_cast<size_t>(start_vertex) > size) {
-    return result;
+    return distance;
   }
 
   const auto& matrix = graph.GetAdjecencyMatrix();
@@ -58,7 +58,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   while (!queue.empty()) {
     int v = queue.front();
     queue.pop();
-    result.push_back(v + 1);
+    distance.push_back(v + 1);
 
     for (size_t u = 0; u < size; ++u) {
       if (matrix[v][u] != 0 && !visited[u]) {
@@ -68,7 +68,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
     }
   }
 
-  return result;
+  return distance;
 }
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
@@ -94,6 +94,7 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
 
   distance[start] = 0;
 
+  /* Dijkstra's algorithm */
   for (size_t i = 0; i < size; ++i) {
     int v = -1;
     for (size_t j = 0; j < size; ++j) {
@@ -117,7 +118,48 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
   return (distance[finish] == INF) ? -1 : distance[finish];
 }
 
-std::vector<std::vector<int>>
+std::vector<std::vector<long long>>
 GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) {
-  
+  const size_t size = graph.Size();
+
+  using Distance = long long;
+  const Distance INF = 1e18;
+
+  if (size == 0) {
+    return {};
+  }
+
+  std::vector<std::vector<Distance>> distance(size,
+                                              std::vector<Distance>(size, INF));
+  const auto& matrix = graph.GetAdjecencyMatrix();
+
+  /* initialization of distance matrix */
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = 0; j < size; ++j) {
+      if (i == j)
+        distance[i][j] = 0;
+      else if (matrix[i][j] > 0)
+        distance[i][j] = matrix[i][j];
+    }
+  }
+  /* Floyd-Warshall algorithm */
+  for (size_t k = 0; k < size; ++k) {
+    for (size_t i = 0; i < size; ++i) {
+      for (size_t j = 0; j < size; ++j) {
+        if (distance[i][k] < INF && distance[k][j] < INF) {
+          distance[i][j] =
+              std::min(distance[i][j], distance[i][k] + distance[k][j]);
+        }
+      }
+    }
+  }
+  /* cleaning up infinities */
+  for (size_t i = 0; i < size; ++i) {
+    for (size_t j = 0; j < size; ++j) {
+      if (distance[i][j] == INF) {
+        distance[i][j] = 0;
+      }
+    }
+  }
+  return distance;
 }

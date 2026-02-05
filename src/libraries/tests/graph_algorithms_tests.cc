@@ -176,8 +176,28 @@ TEST(AlgorithmsTests, DijkstrasTest3) {
             check);
 }
 
-/* 0, 1, 2, 3, 2,
-1, 0, 3, 2, 1,
-2, 3, 0, 3, 4,
-3, 2, 3, 0, 1,
-2, 1, 4, 1, 0, */
+TEST(AlgorithmsTests, FloydWarshallTest1) {
+  Graph graph;
+  EXPECT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  const std::vector<std::vector<long long>> check = {{0, 1, 2, 3, 2},
+                                                     {1, 0, 3, 2, 1},
+                                                     {2, 3, 0, 3, 4},
+                                                     {3, 2, 3, 0, 1},
+                                                     {2, 1, 4, 1, 0}};
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph), check);
+}
+
+TEST(AlgorithmsTests, FloydWarshallOverflow) {
+  Graph graph;
+  EXPECT_TRUE(graph.LoadGraphFromFile("libraries/tests/data/fw_overflow.txt"));
+  const std::vector<std::vector<long long>> check = {
+      {0, 0, 0}, {0, 0, 1}, {0, 1, 0}};
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph), check);
+}
+
+TEST(AlgorithmsTests, FloydWarshallFail) {
+  Graph graph;
+  EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph),
+            std::vector<std::vector<long long>>());
+}
