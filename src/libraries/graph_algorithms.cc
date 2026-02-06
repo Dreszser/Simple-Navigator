@@ -164,5 +164,62 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) {
   return distance;
 }
 
-std::vector<std::vector<int>> GraphAlgorithms::GetLeastSpanningTree(
-    const Graph& graph) {}
+std::vector<std::vector<long long>> GraphAlgorithms::GetLeastSpanningTree(
+    const Graph& graph) {
+  const size_t size = graph.Size();
+
+  using Distance = long long;
+  const Distance INF = 1e18;
+
+  if (size == 0) {
+    return {};
+  }
+
+  const auto& matrix = graph.GetAdjecencyMatrix();
+
+  std::vector<bool> visited(size, false);
+  std::vector<Distance> dist(size, INF);
+  std::vector<int> parent(size, -1);
+
+  dist[0] = 0; /* starting from the first node */
+
+  for (size_t n = 0; n < size; ++n) {
+    int v = -1;
+    /* looking for a node with the least distance */
+    for (size_t i = 0; i < size; ++i) {
+      if (!visited[i] && (v == -1 || dist[v] > dist[i])) {
+        v = static_cast<int>(i);
+      }
+    }
+    /* if the graph is disconnected */
+    if (v == -1 || dist[v] == INF) {
+      return {};
+    }
+
+    visited[v] = true;
+
+    for (size_t u = 0; u < size; ++u) {
+      if (!visited[u] && matrix[v][u] > 0 && matrix[v][u] < dist[u]) {
+        dist[u] = matrix[v][u];
+        parent[u] = v;
+      }
+    }
+  }
+  return CreateMSTAdjacencyMatrix(size, matrix, parent);
+}
+
+std::vector<std::vector<long long>> GraphAlgorithms::CreateMSTAdjacencyMatrix(
+    size_t size, const std::vector<std::vector<int>>& matrix,
+    const std::vector<int>& parent) {
+  std::vector<std::vector<long long>> mst(size,
+                                          std::vector<long long>(size, 0));
+  for (size_t v = 1; v < size; ++v) {
+    if (parent[v] != -1) {
+      long long w = matrix[v][parent[v]];
+      mst[v][parent[v]] = w;
+      mst[parent[v]][v] = w;
+    }
+  }
+
+  return mst;
+}

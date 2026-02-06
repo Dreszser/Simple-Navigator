@@ -16,7 +16,13 @@ class GraphAlgorithms {
                                             int vertex2);
   static std::vector<std::vector<long long>> GetShortestPathsBetweenAllVertices(
       const Graph& graph);
-  static std::vector<std::vector<int>> GetLeastSpanningTree(const Graph& graph);
+  static std::vector<std::vector<long long>> GetLeastSpanningTree(
+      const Graph& graph);
+
+ private:
+  static std::vector<std::vector<long long>> CreateMSTAdjacencyMatrix(
+      size_t size, const std::vector<std::vector<int>>& matrix,
+      const std::vector<int>& parent);
 };
 
 #endif  // S21_GRAPH_ALGORITHMS_H_
