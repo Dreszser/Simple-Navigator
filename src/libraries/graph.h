@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+namespace s21 {
+
 class Graph {
  public:
   Graph() = default;
@@ -19,5 +21,7 @@ class Graph {
 
   bool ValidateGraph(const std::vector<std::vector<int>>& adj_matrix);
 };
+
+}  // namespace s21
 
 #endif  // S21_GRAPH_H_

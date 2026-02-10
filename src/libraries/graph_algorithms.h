@@ -5,6 +5,9 @@
 
 #include "graph.h"
 #include "s21_containers.h"
+#include "tsp.h"
+
+namespace s21 {
 
 class GraphAlgorithms {
  public:
@@ -18,11 +21,14 @@ class GraphAlgorithms {
       const Graph& graph);
   static std::vector<std::vector<long long>> GetLeastSpanningTree(
       const Graph& graph);
+  static tsp::TsmResult SolveTravelingSalesmanProblem(const Graph& graph);
 
  private:
   static std::vector<std::vector<long long>> CreateMSTAdjacencyMatrix(
       size_t size, const std::vector<std::vector<int>>& matrix,
       const std::vector<int>& parent);
 };
+
+}  // namespace s21
 
 #endif  // S21_GRAPH_ALGORITHMS_H_

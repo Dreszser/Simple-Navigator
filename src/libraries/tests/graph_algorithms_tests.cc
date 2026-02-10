@@ -6,7 +6,9 @@
 #include "graph.h"
 #include "graph_algorithms.h"
 
-TEST(AlgorithmsTests, BFSFailTest1) {
+using namespace s21;
+
+TEST(BFSTests, BFSFailTest1) {
   Graph graph;
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, 4), std::vector<int>());
   ASSERT_TRUE(
@@ -15,7 +17,7 @@ TEST(AlgorithmsTests, BFSFailTest1) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, 6), std::vector<int>());
 }
 
-TEST(AlgorithmsTests, BFSSimpleTest1) {
+TEST(BFSTests, BFSSimpleTest1) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -24,7 +26,7 @@ TEST(AlgorithmsTests, BFSSimpleTest1) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, BFSSimpleTest2) {
+TEST(BFSTests, BFSSimpleTest2) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -33,7 +35,7 @@ TEST(AlgorithmsTests, BFSSimpleTest2) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, BFSSimpleTest3) {
+TEST(BFSTests, BFSSimpleTest3) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -42,7 +44,7 @@ TEST(AlgorithmsTests, BFSSimpleTest3) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, BFSSimpleTest4) {
+TEST(BFSTests, BFSSimpleTest4) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -51,7 +53,7 @@ TEST(AlgorithmsTests, BFSSimpleTest4) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, BFSSimpleTest5) {
+TEST(BFSTests, BFSSimpleTest5) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -60,7 +62,7 @@ TEST(AlgorithmsTests, BFSSimpleTest5) {
   EXPECT_EQ(GraphAlgorithms::BreadthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DFSFailTest1) {
+TEST(DFSTests, DFSFailTest1) {
   Graph graph;
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, 4), std::vector<int>());
   ASSERT_TRUE(
@@ -69,7 +71,7 @@ TEST(AlgorithmsTests, DFSFailTest1) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, 6), std::vector<int>());
 }
 
-TEST(AlgorithmsTests, DFSSimpleTest1) {
+TEST(DFSTests, DFSSimpleTest1) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -78,7 +80,7 @@ TEST(AlgorithmsTests, DFSSimpleTest1) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DFSSimpleTest2) {
+TEST(DFSTests, DFSSimpleTest2) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -87,7 +89,7 @@ TEST(AlgorithmsTests, DFSSimpleTest2) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DFSSimpleTest3) {
+TEST(DFSTests, DFSSimpleTest3) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -96,7 +98,7 @@ TEST(AlgorithmsTests, DFSSimpleTest3) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DFSSimpleTest4) {
+TEST(DFSTests, DFSSimpleTest4) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -105,7 +107,7 @@ TEST(AlgorithmsTests, DFSSimpleTest4) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DFSSimpleTest5) {
+TEST(DFSTests, DFSSimpleTest5) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -114,7 +116,7 @@ TEST(AlgorithmsTests, DFSSimpleTest5) {
   EXPECT_EQ(GraphAlgorithms::DepthFirstSearch(graph, start_vertex), check);
 }
 
-TEST(AlgorithmsTests, DijkstraFailTest1) {
+TEST(DijkstraTests, DijkstraFailTest1) {
   Graph graph;
   const int fail_code = -1;
   EXPECT_EQ(GraphAlgorithms::GetShortestPathBetweenVertices(graph, 1, 1),
@@ -131,7 +133,7 @@ TEST(AlgorithmsTests, DijkstraFailTest1) {
             fail_code);
 }
 
-TEST(AlgorithmsTests, DijkstraFailTest2) {
+TEST(DijkstraTests, DijkstraFailTest2) {
   Graph graph;
   const int fail_code = -1;
   ASSERT_TRUE(
@@ -140,7 +142,7 @@ TEST(AlgorithmsTests, DijkstraFailTest2) {
             fail_code);
 }
 
-TEST(AlgorithmsTests, DijkstrasTest1) {
+TEST(DijkstraTests, DijkstrasTest1) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -152,7 +154,7 @@ TEST(AlgorithmsTests, DijkstrasTest1) {
             check);
 }
 
-TEST(AlgorithmsTests, DijkstrasTest2) {
+TEST(DijkstraTests, DijkstrasTest2) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -164,7 +166,7 @@ TEST(AlgorithmsTests, DijkstrasTest2) {
             check);
 }
 
-TEST(AlgorithmsTests, DijkstrasTest3) {
+TEST(DijkstraTests, DijkstrasTest3) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -176,7 +178,7 @@ TEST(AlgorithmsTests, DijkstrasTest3) {
             check);
 }
 
-TEST(AlgorithmsTests, FloydWarshallTest1) {
+TEST(FloydWarshallTests, FloydWarshallTest1) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -188,7 +190,7 @@ TEST(AlgorithmsTests, FloydWarshallTest1) {
   EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph), check);
 }
 
-TEST(AlgorithmsTests, FloydWarshallOverflow) {
+TEST(FloydWarshallTests, FloydWarshallOverflow) {
   Graph graph;
   ASSERT_TRUE(graph.LoadGraphFromFile("libraries/tests/data/fw_overflow.txt"));
   const std::vector<std::vector<long long>> check = {
@@ -196,13 +198,13 @@ TEST(AlgorithmsTests, FloydWarshallOverflow) {
   EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph), check);
 }
 
-TEST(AlgorithmsTests, FloydWarshallFail) {
+TEST(FloydWarshallTests, FloydWarshallFail) {
   Graph graph;
   EXPECT_EQ(GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph),
             std::vector<std::vector<long long>>());
 }
 
-TEST(AlgorithmsTests, PrimmDisconnectedGraph) {
+TEST(PrimmTests, PrimmDisconnectedGraph) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/valid_graph_2.txt"));
@@ -212,7 +214,7 @@ TEST(AlgorithmsTests, PrimmDisconnectedGraph) {
   EXPECT_EQ(mst, expected);
 }
 
-TEST(AlgoritmsTests, PrimmTest) {
+TEST(PrimmTests, PrimmTest) {
   Graph graph;
   ASSERT_TRUE(
       graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
@@ -224,7 +226,7 @@ TEST(AlgoritmsTests, PrimmTest) {
   EXPECT_EQ(GraphAlgorithms::GetLeastSpanningTree(graph), check);
 }
 
-TEST(AlgorithmsTests, PrimmEmptyGraph) {
+TEST(PrimmTests, PrimmEmptyGraph) {
   Graph graph;
   auto mst = GraphAlgorithms::GetLeastSpanningTree(graph);
   std::vector<std::vector<long long>> expected;

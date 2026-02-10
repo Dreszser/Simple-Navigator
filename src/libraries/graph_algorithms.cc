@@ -1,5 +1,7 @@
 #include "graph_algorithms.h"
 
+namespace s21 {
+
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
                                                    int start_vertex) {
   std::vector<int> distance;
@@ -223,3 +225,5 @@ std::vector<std::vector<long long>> GraphAlgorithms::CreateMSTAdjacencyMatrix(
 
   return mst;
 }
+
+}  // namespace s21

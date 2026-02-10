@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+namespace s21 {
+
 bool Graph::LoadGraphFromFile(const std::string& filename) {
   std::ifstream file(filename);
   if (!file.is_open()) {
@@ -90,3 +92,5 @@ const std::vector<std::vector<int>>& Graph::GetAdjecencyMatrix() const {
 }
 
 size_t Graph::Size() const { return adjacency_matrix_.size(); }
+
+}  // namespace s21

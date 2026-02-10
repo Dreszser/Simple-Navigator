@@ -13,6 +13,9 @@ GRAPH_LIB = libraries/s21_graph.a
 GRAPH_ALG_SRC = libraries/graph_algorithms.cc
 GRAPH_ALG_LIB = libraries/s21_graph_algorithms.a
 
+TSP_SRC = libraries/tsp.cc 
+TSP_OBJ = libraries/tsp.o
+
 ifeq ($(SYSTEM), Linux)
 	OPEN_CMD = xdg-open
 	LTEST = -lgtest -lsubunit -lm -lrt -pthread
@@ -25,7 +28,7 @@ endif
 
 all: clean test clean_gcovr
 
-test: clean s21_graph s21_graph_algorithms
+test: clean s21_graph s21_graph_algorithms 
 	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(EXE) $(GRAPH_INCLUDE)
 	./$(EXE) 
 
@@ -37,8 +40,9 @@ s21_graph:
 
 s21_graph_algorithms:
 	$(CC) $(CFLAGS) -c $(GRAPH_ALG_SRC) $(GRAPH_INCLUDE) -o libraries/graph_algorithms.o
-	ar rcs $(GRAPH_ALG_LIB) libraries/graph_algorithms.o
-	rm -rf libraries/graph_algorithms.o
+	$(CC) $(CFLAGS) -c $(TSP_SRC) $(GRAPH_INCLUDE) -o $(TSP_OBJ)
+	ar rcs $(GRAPH_ALG_LIB) libraries/graph_algorithms.o $(TSP_OBJ)
+	rm -rf libraries/graph_algorithms.o $(TSP_OBJ)
 	ranlib $(GRAPH_ALG_LIB)
 
 clean:
@@ -56,13 +60,10 @@ gcov_report: clean test
 	rm -rf *.gc* libraries/*.gc*
 
 style:
-	@find s21_containers \( -name "*.tpp*" -or -name "*.h" \) -exec clang-format --style=google -i {} +
-	@find tests \( -name "*.cc*" -or -name "*.h" \) -exec clang-format --style=google -i {} +
-	@echo "All C++ source files and headers formatted with Google style."
+	clang-format --style=google -i ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc
 
 style_check:
-	@find s21_containers \( -name "*.tpp*" -or -name "*.h" \) -exec clang-format --style=google -n {} +
-	@find tests \( -name "*.cc*" -or -name "*.h" \) -exec clang-format --style=google -n {} +
+	clang-format --style=google -n ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc
 
 rebuild:
 	make all
