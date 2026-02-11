@@ -29,14 +29,23 @@ struct ColonyParams {
   double Q = 100.0;
 };
 
-struct ColonyState {
-  std::vector<std::vector<double>> pheromones;
-};
-
 class AntColonyOptimizer {
  public:
-  explicit AntColonyOptimizer(const s21::Graph&);
+  explicit AntColonyOptimizer(const s21::Graph& graph) : graph_(graph) {};
   TsmResult Solve();
+
+ private:
+  const s21::Graph& graph_;
+  std::vector<std::vector<double>> pheromones_;
+  ColonyParams params_;
+
+  Ant CreateAnt(int start_vertex) const;
+  std::vector<Ant> CreateAnts(size_t size);
+  void InitializePheromones(size_t size);
+  void BuildAntPath(Ant& ant);
+  int ChooseNextVertex(const Ant& ant);
+  void UpdateBestPath(const Ant& ant, TsmResult* best);
+  void EvaporateAndDepositPheromones(const std::vector<Ant>& ants);
 };
 
 }  // namespace tsp
