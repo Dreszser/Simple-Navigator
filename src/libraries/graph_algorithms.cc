@@ -226,4 +226,10 @@ std::vector<std::vector<long long>> GraphAlgorithms::CreateMSTAdjacencyMatrix(
   return mst;
 }
 
+tsp::TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(
+    const Graph& graph) {
+  tsp::AntColonyOptimizer aco(graph);
+  return aco.Solve();
+}
+
 }  // namespace s21

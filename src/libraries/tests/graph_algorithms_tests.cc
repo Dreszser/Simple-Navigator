@@ -232,3 +232,68 @@ TEST(PrimmTests, PrimmEmptyGraph) {
   std::vector<std::vector<long long>> expected;
   EXPECT_EQ(mst, expected);
 }
+
+TEST(IsTourValidTests, IsTourValidTest1) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult valid{.vertices = {1, 2, 5, 4, 3, 1}, .distance = 8.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_TRUE(aco.IsTourValid(valid));
+}
+
+TEST(IsTourValidTests, IsTourValidTest2) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult no_return{.vertices = {1, 2, 5, 4, 3}, .distance = 7.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(no_return));
+}
+
+TEST(IsTourValidTests, IsTourValidTest3) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult wrong_cycle{.vertices = {1, 2, 5, 4, 3, 2}, .distance = 8.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(wrong_cycle));
+}
+
+TEST(IsTourValidTests, IsTourValidTest4) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult duplicate_vertex{.vertices = {1, 2, 5, 2, 3, 1},
+                                  .distance = 8.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(duplicate_vertex));
+}
+
+TEST(IsTourValidTests, IsTourValidTest5) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult no_edge{.vertices = {1, 2, 4, 5, 3, 1}, .distance = 10.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(no_edge));
+}
+
+TEST(IsTourValidTests, IsTourValidTest6) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult wrong_distance{.vertices = {1, 2, 5, 4, 3, 1},
+                                .distance = 10.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(wrong_distance));
+}
+
+TEST(IsTourValidTests, IsTourValidTest7) {
+  Graph graph;
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+  tsp::TsmResult zero_distance{.vertices = {1, 2, 5, 4, 3, 1}, .distance = 0.0};
+  tsp::AntColonyOptimizer aco(graph);
+  EXPECT_FALSE(aco.IsTourValid(zero_distance));
+}

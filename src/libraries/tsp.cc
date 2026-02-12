@@ -1,7 +1,6 @@
 #include "tsp.h"
 
 #include <limits>
-#include <random>
 
 namespace tsp {
 
@@ -29,7 +28,9 @@ TsmResult AntColonyOptimizer::Solve() {
   if (result.vertices.empty()) {
     return {};
   }
-
+  for (auto& vert : result.vertices) {
+    ++vert;
+  }
   return result;
 }
 
@@ -103,13 +104,15 @@ int AntColonyOptimizer::ChooseNextVertex(const Ant& ant) {
 
   // нормируем вероятности
   double sum = std::accumulate(probabilities.begin(), probabilities.end(), 0.0);
-  for (auto& p : probabilities) p /= sum;
+  if (sum == 0.0) {
+    std::uniform_int_distribution<size_t> d(0, candidates.size() - 1);
+    return candidates[d(gen_)];
+  } else {
+    for (auto& p : probabilities) p /= sum;
+  }
 
   // делаем случайный выбор
-  std::uniform_real_distribution<double> dist(0.0, 1.0);
-  static std::default_random_engine re(
-      std::chrono::system_clock::now().time_since_epoch().count());
-  double r = dist(re);
+  double r = Random01();
 
   double cumulative = 0.0;
   for (size_t i = 0; i < candidates.size(); ++i) {
@@ -119,10 +122,10 @@ int AntColonyOptimizer::ChooseNextVertex(const Ant& ant) {
   return candidates.back();
 }
 
-void AntColonyOptimizer::UpdateBestPath(const Ant& ant, TsmResult* best) {
-  if (ant.path.size() == graph_.Size() + 1 && ant.distance < best->distance) {
-    best->distance = ant.distance;
-    best->vertices = ant.path;
+void AntColonyOptimizer::UpdateBestPath(const Ant& ant, TsmResult* result) {
+  if (ant.path.size() == graph_.Size() + 1 && ant.distance < result->distance) {
+    result->distance = ant.distance;
+    result->vertices = ant.path;
   }
 }
 
@@ -133,13 +136,14 @@ void AntColonyOptimizer::EvaporateAndDepositPheromones(
   for (size_t i = 0; i < size; ++i) {
     for (size_t j = 0; j < size; ++j) {
       pheromones_[i][j] *= (1.0 - params_.evaporation);
-      if (pheromones_[i][j] < 0.01 && i != j) pheromones_[i][j] = 0.01;
+      if (pheromones_[i][j] < params_.min_pheromone && i != j)
+        pheromones_[i][j] = params_.min_pheromone;
     }
   }
 
   // добавление феромонов
   for (const auto& ant : ants) {
-    if (ant.path.size() != size + 1) continue;  // недопустимый путь
+    if (ant.path.size() != size + 1) continue;  // неполный путь
     for (size_t i = 0; i < ant.path.size() - 1; ++i) {
       int from = ant.path[i];
       int to = ant.path[i + 1];
@@ -147,6 +151,44 @@ void AntColonyOptimizer::EvaporateAndDepositPheromones(
       pheromones_[to][from] = pheromones_[from][to];
     }
   }
+}
+
+double AntColonyOptimizer::Random01() {
+  static std::uniform_real_distribution<double> dist(0.0, 1.0);
+  return dist(gen_);
+}
+
+bool AntColonyOptimizer::IsTourValid(const tsp::TsmResult& result) {
+  const auto& matrix = graph_.GetAdjecencyMatrix();
+  const size_t size = graph_.Size();
+
+  if ((result.vertices.size() != size + 1) ||
+      (result.vertices.front() != result.vertices.back()) ||
+      result.distance <= 0.0) {
+    return false;
+  } else {
+    double distance = 0.0;
+    std::vector<bool> check(size, false);
+    for (size_t i = 0; i < size; ++i) {
+      int from = result.vertices[i] - 1;
+      int to = result.vertices[i + 1] - 1;
+      if (check[from] || from < 0 || from >= static_cast<int>(size) || to < 0 ||
+          to >= static_cast<int>(size)) {
+        return false;
+      }
+      check[from] = true;
+
+      if (matrix[from][to] == 0) {
+        return false;
+      }
+      distance += static_cast<double>(matrix[from][to]);
+    }
+    constexpr double kEps = 1e-9;
+    if (std::fabs(result.distance - distance) > kEps) {
+      return false;
+    }
+  }
+  return true;
 }
 
 }  // namespace tsp

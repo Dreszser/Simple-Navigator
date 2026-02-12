@@ -1,6 +1,7 @@
 #ifndef S21_TSP_H_
 #define S21_TSP_H_
 
+#include <random>
 #include <vector>
 
 #include "graph.h"
@@ -22,22 +23,25 @@ struct Ant {
 
 struct ColonyParams {
   int ants = 10;
-  int iterations = 100;
+  int iterations = 200;
   double alpha = 1.0;
-  double beta = 2.0;
+  double beta = 3.0;
   double evaporation = 0.5;
   double Q = 100.0;
+  double min_pheromone = 0.01;
 };
 
 class AntColonyOptimizer {
  public:
   explicit AntColonyOptimizer(const s21::Graph& graph) : graph_(graph) {};
   TsmResult Solve();
+  bool IsTourValid(const TsmResult& result);
 
  private:
   const s21::Graph& graph_;
   std::vector<std::vector<double>> pheromones_;
   ColonyParams params_;
+  mutable std::mt19937 gen_{std::random_device{}()};
 
   Ant CreateAnt(int start_vertex) const;
   std::vector<Ant> CreateAnts(size_t size);
@@ -46,6 +50,7 @@ class AntColonyOptimizer {
   int ChooseNextVertex(const Ant& ant);
   void UpdateBestPath(const Ant& ant, TsmResult* best);
   void EvaporateAndDepositPheromones(const std::vector<Ant>& ants);
+  double Random01();
 };
 
 }  // namespace tsp
