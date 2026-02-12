@@ -53,6 +53,11 @@ class AntColonyOptimizer {
   double Random01();
 };
 
+class TspValidator {
+ public:
+  static bool IsTourValid(const s21::Graph& graph, const TsmResult& result);
+};
+
 }  // namespace tsp
 
 #endif  // S21_TSP_H_

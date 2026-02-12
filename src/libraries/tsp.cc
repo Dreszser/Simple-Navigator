@@ -158,9 +158,10 @@ double AntColonyOptimizer::Random01() {
   return dist(gen_);
 }
 
-bool AntColonyOptimizer::IsTourValid(const tsp::TsmResult& result) {
-  const auto& matrix = graph_.GetAdjecencyMatrix();
-  const size_t size = graph_.Size();
+bool TspValidator::IsTourValid(const s21::Graph& graph,
+                               const TsmResult& result) {
+  const auto& matrix = graph.GetAdjecencyMatrix();
+  const size_t size = graph.Size();
 
   if ((result.vertices.size() != size + 1) ||
       (result.vertices.front() != result.vertices.back()) ||
