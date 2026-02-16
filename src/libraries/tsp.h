@@ -35,7 +35,6 @@ class AntColonyOptimizer {
  public:
   explicit AntColonyOptimizer(const s21::Graph& graph) : graph_(graph) {};
   TsmResult Solve();
-  bool IsTourValid(const TsmResult& result);
 
  private:
   const s21::Graph& graph_;

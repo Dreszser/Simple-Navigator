@@ -1,8 +1,13 @@
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -std=c++20 --coverage
+CFLAGS = -Wall -Wextra -Werror -std=c++20
+GCOV_FLAG = --coverage
+
+APP_SRC = console_app/*.cc
+APP_EXE = s21_simple_navigator
+APP_INCLUDE = -I console_app/.
 
 TEST_SRC = libraries/tests/*.cc
-EXE = test
+TEST_EXE = test
 BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
 GRAPH_INCLUDE = -I libraries/. -I .
@@ -28,9 +33,12 @@ endif
 
 all: clean test clean_gcovr
 
-test: clean s21_graph s21_graph_algorithms 
-	$(CC) $(CFLAGS) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(EXE) $(GRAPH_INCLUDE)
-	./$(EXE) 
+console_app: clean s21_graph s21_graph_algorithms
+	$(CC) $(CFLAGS) $(APP_SRC) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(APP_EXE) $(APP_INCLUDE) $(GRAPH_INCLUDE)
+
+test: clean s21_graph_test s21_graph_algorithms_test
+	$(CC) $(CFLAGS) $(GCOV_FLAG) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(TEST_EXE) $(GRAPH_INCLUDE)
+	./$(TEST_EXE) 
 
 s21_graph:
 	$(CC) $(CFLAGS) -c $(GRAPH_SRC) $(GRAPH_INCLUDE) -o libraries/graph.o
@@ -45,9 +53,23 @@ s21_graph_algorithms:
 	rm -rf libraries/graph_algorithms.o $(TSP_OBJ)
 	ranlib $(GRAPH_ALG_LIB)
 
+s21_graph_test:
+	$(CC) $(CFLAGS) $(GCOV_FLAG) -c $(GRAPH_SRC) $(GRAPH_INCLUDE) -o libraries/graph.o
+	ar rcs $(GRAPH_LIB) libraries/graph.o
+	rm -rf libraries/graph.o
+	ranlib $(GRAPH_LIB)
+
+s21_graph_algorithms_test:
+	$(CC) $(CFLAGS) $(GCOV_FLAG) -c $(GRAPH_ALG_SRC) $(GRAPH_INCLUDE) -o libraries/graph_algorithms.o
+	$(CC) $(CFLAGS) $(GCOV_FLAG) -c $(TSP_SRC) $(GRAPH_INCLUDE) -o $(TSP_OBJ)
+	ar rcs $(GRAPH_ALG_LIB) libraries/graph_algorithms.o $(TSP_OBJ)
+	rm -rf libraries/graph_algorithms.o $(TSP_OBJ)
+	ranlib $(GRAPH_ALG_LIB)
+
 clean:
-	rm -rf *.o *.g* *.info *.out report *.a test *.log gcov* *.dSYM *.a libraries/*.o \
-	libraries/*.a libraries/tests/output/* libraries/*.gc*
+	rm -rf *.o *.g* *.info *.out report *.a *.log gcov* *.dSYM *.a libraries/*.o \
+	libraries/*.a libraries/tests/output/* libraries/*.gc* $(APP_EXE) $(TEST_EXE) \
+	*.dot 
 
 clean_gcovr:
 	rm -rf *.gc* libraries/*.gc*
@@ -60,10 +82,12 @@ gcov_report: clean test
 	rm -rf *.gc* libraries/*.gc*
 
 style:
-	clang-format --style=google -i ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc
+	clang-format --style=google -i ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc \
+	./console_app/*.cc ./console_app/*.h
 
 style_check:
-	clang-format --style=google -n ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc
+	clang-format --style=google -n ./libraries/*.h ./libraries/*.cc ./libraries/tests/*.cc \
+	./console_app/*.cc ./console_app/*.h
 
 rebuild:
 	make all

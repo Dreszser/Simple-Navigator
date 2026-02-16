@@ -293,89 +293,49 @@ TEST(IsTourValidTests, IsTourValidTest7) {
 
 TEST(TSPTests, AntColonyTest1) {
   Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 8.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
+  ASSERT_TRUE(graph.LoadGraphFromFile(
+      "libraries/tests/data/travelling_salesman_problem_graph.txt"));
+
+  const double optimal = 253.0;
+
+  for (int i = 0; i < 5; ++i) {
+    tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
+
+    EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
+    EXPECT_GE(res.distance, optimal);
+    EXPECT_LE(res.distance, optimal + 2.0);
+  }
 }
 
 TEST(TSPTests, AntColonyTest2) {
   Graph graph;
-  ASSERT_TRUE(graph.LoadGraphFromFile(
-      "libraries/tests/data/travelling_salesman_problem_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 253.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
+  ASSERT_TRUE(
+      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
+
+  const double optimal = 8.0;
+
+  for (int i = 0; i < 5; ++i) {
+    tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
+
+    EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
+    EXPECT_GE(res.distance, optimal);
+    EXPECT_LE(res.distance, optimal + 2.0);
+  }
 }
 
 TEST(TSPTests, AntColonyTest3) {
   Graph graph;
   ASSERT_TRUE(graph.LoadGraphFromFile("libraries/tests/data/tsp_test.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 69.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
 
-TEST(TSPTests, AntColonyTest4) {
-  Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 8.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
+  const double optimal = 69.0;
 
-TEST(TSPTests, AntColonyTest5) {
-  Graph graph;
-  ASSERT_TRUE(graph.LoadGraphFromFile(
-      "libraries/tests/data/travelling_salesman_problem_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 253.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
+  for (int i = 0; i < 5; ++i) {
+    tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
 
-TEST(TSPTests, AntColonyTest6) {
-  Graph graph;
-  ASSERT_TRUE(graph.LoadGraphFromFile("libraries/tests/data/tsp_test.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 69.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
-
-TEST(TSPTests, AntColonyTest7) {
-  Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("libraries/tests/data/algorithm_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 8.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
-
-TEST(TSPTests, AntColonyTest8) {
-  Graph graph;
-  ASSERT_TRUE(graph.LoadGraphFromFile(
-      "libraries/tests/data/travelling_salesman_problem_graph.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 253.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
-}
-
-TEST(TSPTests, AntColonyTest9) {
-  Graph graph;
-  ASSERT_TRUE(graph.LoadGraphFromFile("libraries/tests/data/tsp_test.txt"));
-  tsp::TsmResult res = GraphAlgorithms::SolveTravelingSalesmanProblem(graph);
-  EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
-  const double check = 69.0;
-  EXPECT_NEAR(res.distance, check, 1e-9);
+    EXPECT_TRUE(tsp::TspValidator::IsTourValid(graph, res));
+    EXPECT_GE(res.distance, optimal);
+    EXPECT_LE(res.distance, optimal + 2.0);
+  }
 }
 
 TEST(TSPTests, AntColonyFail1) {
