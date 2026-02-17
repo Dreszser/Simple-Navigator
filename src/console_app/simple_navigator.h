@@ -20,8 +20,8 @@ class SimpleNavigatorApp {
 
   void LoadGraph();
   void ExportGraph();
-  void TraverseBfs();
-  void TraverseDfs();
+  void BreadthFirstSearch();
+  void DepthFirstSearch();
   void ShortestPath();
   void AllPairsShortestPath();
   void MinimumSpanningTree();

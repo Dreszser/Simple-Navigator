@@ -1,5 +1,6 @@
 #include "simple_navigator.h"
 
+#include <iomanip>
 #include <iostream>
 
 namespace s21 {
@@ -36,11 +37,6 @@ void SimpleNavigatorApp::PrintMenu() const {
 }
 
 void SimpleNavigatorApp::HandleCommand(int command) {
-  if (command != 1 && !graph_loaded_) {
-    PrintMessage("Graph is not loaded");
-    return;
-  }
-
   switch (command) {
     case 1:
       LoadGraph();
@@ -49,10 +45,10 @@ void SimpleNavigatorApp::HandleCommand(int command) {
       ExportGraph();
       break;
     case 3:
-      TraverseBfs();
+      BreadthFirstSearch();
       break;
     case 4:
-      TraverseDfs();
+      DepthFirstSearch();
       break;
     case 5:
       ShortestPath();
@@ -101,7 +97,7 @@ void SimpleNavigatorApp::ExportGraph() {
   }
 }
 
-void SimpleNavigatorApp::TraverseBfs() {
+void SimpleNavigatorApp::BreadthFirstSearch() {
   if (graph_loaded_) {
     std::vector<int> result;
     int start_vertex;
@@ -115,7 +111,7 @@ void SimpleNavigatorApp::TraverseBfs() {
 
     if (!result.empty()) {
       ClearScreen();
-      PrintVector(result, "BFS:");
+      PrintVector(result, "BFS");
       WaitForEnter();
     } else {
       PrintMessage("Failed to perform Breadth First Search");
@@ -125,7 +121,7 @@ void SimpleNavigatorApp::TraverseBfs() {
   }
 }
 
-void SimpleNavigatorApp::TraverseDfs() {
+void SimpleNavigatorApp::DepthFirstSearch() {
   if (graph_loaded_) {
     std::vector<int> result;
     int start_vertex;
@@ -139,7 +135,7 @@ void SimpleNavigatorApp::TraverseDfs() {
 
     if (!result.empty()) {
       ClearScreen();
-      PrintVector(result, "DFS:");
+      PrintVector(result, "DFS");
       WaitForEnter();
     } else {
       PrintMessage("Failed to perform Depth First Search");
@@ -150,54 +146,84 @@ void SimpleNavigatorApp::TraverseDfs() {
 }
 
 void SimpleNavigatorApp::ShortestPath() {
-  std::string filename;
-  std::cout << "Enter filename: ";
-  std::cin >> filename;
+  if (graph_loaded_) {
+    int start_vertex;
+    int finish_vertex;
+    std::cout << "Enter first vertex: ";
+    if (!ReadInt(start_vertex)) {
+      PrintMessage("Invalid input");
+      return;
+    }
+    std::cout << "Enter second vertex: ";
+    if (!ReadInt(finish_vertex)) {
+      PrintMessage("Invalid input");
+      return;
+    }
 
-  if (graph_.LoadGraphFromFile(filename)) {
-    graph_loaded_ = true;
-    std::cout << "Graph loaded successfully\n";
+    int result = s21::GraphAlgorithms::GetShortestPathBetweenVertices(
+        graph_, start_vertex, finish_vertex);
+
+    if (result != -1) {
+      ClearScreen();
+      std::cout << "Shortest path length: " << result << "\n";
+      WaitForEnter();
+    } else {
+      PrintMessage("Failed to find the shortest path between vertices");
+    }
   } else {
-    std::cout << "Failed to load graph\n";
+    PrintMessage("Graph is not loaded");
   }
 }
 
 void SimpleNavigatorApp::AllPairsShortestPath() {
-  std::string filename;
-  std::cout << "Enter filename: ";
-  std::cin >> filename;
+  if (graph_loaded_) {
+    std::vector<std::vector<long long>> result =
+        s21::GraphAlgorithms::GetShortestPathsBetweenAllVertices(graph_);
 
-  if (graph_.LoadGraphFromFile(filename)) {
-    graph_loaded_ = true;
-    std::cout << "Graph loaded successfully\n";
+    if (!result.empty()) {
+      ClearScreen();
+      PrintAdjacencyMatrix(result, "Shortest paths between all vertices");
+      WaitForEnter();
+    } else {
+      PrintMessage("Failed to find shortest paths between all vertices");
+    }
   } else {
-    std::cout << "Failed to load graph\n";
+    PrintMessage("Graph is not loaded");
   }
 }
 
 void SimpleNavigatorApp::MinimumSpanningTree() {
-  std::string filename;
-  std::cout << "Enter filename: ";
-  std::cin >> filename;
+  if (graph_loaded_) {
+    std::vector<std::vector<long long>> result =
+        s21::GraphAlgorithms::GetLeastSpanningTree(graph_);
 
-  if (graph_.LoadGraphFromFile(filename)) {
-    graph_loaded_ = true;
-    std::cout << "Graph loaded successfully\n";
+    if (!result.empty()) {
+      ClearScreen();
+      PrintAdjacencyMatrix(result, "Minimum Spanning Tree");
+      WaitForEnter();
+    } else {
+      PrintMessage("Failed to find minimum spanning tree");
+    }
   } else {
-    std::cout << "Failed to load graph\n";
+    PrintMessage("Graph is not loaded");
   }
 }
 
 void SimpleNavigatorApp::SolveTsp() {
-  std::string filename;
-  std::cout << "Enter filename: ";
-  std::cin >> filename;
+  if (graph_loaded_) {
+    tsp::TsmResult result =
+        s21::GraphAlgorithms::SolveTravelingSalesmanProblem(graph_);
 
-  if (graph_.LoadGraphFromFile(filename)) {
-    graph_loaded_ = true;
-    std::cout << "Graph loaded successfully\n";
+    if (!result.vertices.empty()) {
+      ClearScreen();
+      PrintVector(result.vertices, "Traveling Salesman path");
+      std::cout << "Distance: " << result.distance << "\n";
+      WaitForEnter();
+    } else {
+      PrintMessage("Failed to solve traveling salesman problem");
+    }
   } else {
-    std::cout << "Failed to load graph\n";
+    PrintMessage("Graph is not loaded");
   }
 }
 
@@ -247,7 +273,7 @@ void SimpleNavigatorApp::PrintAdjacencyMatrix(
 
   for (const auto& row : matrix) {
     for (const auto& value : row) {
-      std::cout << value << '\t';
+      std::cout << std::setw(6) << value;
     }
     std::cout << '\n';
   }
