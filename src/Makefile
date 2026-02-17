@@ -10,7 +10,7 @@ TEST_SRC = libraries/tests/*.cc
 TEST_EXE = test
 BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
-GRAPH_INCLUDE = -I libraries/.
+GRAPH_INCLUDE = -I libraries/. -I .
 
 GRAPH_SRC = libraries/graph.cc
 GRAPH_LIB = libraries/s21_graph.a
