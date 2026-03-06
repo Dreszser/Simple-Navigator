@@ -12,26 +12,26 @@ class set {
   using key_type = Key;
   using value_type = Key;
   using tree = Tree<value_type>;
-  using reference = value_type &;
-  using const_reference = const value_type &;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using iterator = typename tree::iterator;
   using const_iterator = typename tree::const_iterator;
   using size_type = size_t;
 
-  tree *tree_;
+  tree* tree_;
 
   /* Constructors */
 
   set();
-  set(std::initializer_list<value_type> const &items);
-  set(const set &s);
-  set(set &&s) noexcept;
+  set(std::initializer_list<value_type> const& items);
+  set(const set& s);
+  set(set&& s) noexcept;
   ~set();
 
   /* Operators overloads */
 
-  set &operator=(set &&s);
-  set &operator=(const set &s);
+  set& operator=(set&& s);
+  set& operator=(const set& s);
 
   /* Set Iterators */
 
@@ -50,15 +50,15 @@ class set {
   /* Set Modifiers */
 
   void clear();
-  std::pair<iterator, bool> insert(const value_type &value);
+  std::pair<iterator, bool> insert(const value_type& value);
   void erase(iterator pos);
-  void swap(set &other);
-  void merge(set &other);
+  void swap(set& other);
+  void merge(set& other);
 
   /* Set Lookup */
 
-  iterator find(const Key &key);
-  bool contains(const Key &key);
+  iterator find(const Key& key);
+  bool contains(const Key& key);
 
   /* Print for debugging */
 
@@ -66,7 +66,7 @@ class set {
 
   /* insert many */
   template <class... Args>
-  s21::vector<std::pair<iterator, bool>> insert_many(Args &&...args);
+  s21::vector<std::pair<iterator, bool>> insert_many(Args&&... args);
 };
 
 }  // namespace s21

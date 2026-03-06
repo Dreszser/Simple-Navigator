@@ -24,7 +24,7 @@ class vector {
   vector();
   explicit vector(size_type n);
   vector(std::initializer_list<value_type> const&
-             items);  // инициализация с помощью списка
+             items);            // инициализация с помощью списка
   vector(const vector& v);      // конструктор копирования
   vector(vector&& v) noexcept;  // конструктор перемещения
 
@@ -35,15 +35,15 @@ class vector {
   ~vector();
 
   // методы доступа к элементам класса
-  reference at(size_type pos);  // ссылка на элемент с проверкой границ
+  reference at(size_type pos);          // ссылка на элемент с проверкой границ
   reference operator[](size_type pos);  // ссылка на элемент без проверки границ
-  const_reference front() const;  // сылка на первый элемент
-  const_reference back() const;  // ссылка на последний элемент
-  pointer data() noexcept;  // указатель на первый элемент
+  const_reference front() const;        // сылка на первый элемент
+  const_reference back() const;         // ссылка на последний элемент
+  pointer data() noexcept;              // указатель на первый элемент
 
   // методы итерирования
   iterator begin() noexcept;  // итератор на первый элемент
-  iterator end() noexcept;  // итератор на элемент после последнего
+  iterator end() noexcept;    // итератор на элемент после последнего
   const_iterator cbegin() const noexcept;
   const_iterator cend() const noexcept;
 

@@ -7,18 +7,18 @@ template <typename T, std::size_t N>
 class array {
  public:
   using value_type = T;
-  using reference = T &;
-  using const_reference = const T &;
-  using iterator = T *;
-  using const_iterator = const T *;
+  using reference = T&;
+  using const_reference = const T&;
+  using iterator = T*;
+  using const_iterator = const T*;
   using size_type = size_t;
 
   // конструкторы
   array();
-  array(std::initializer_list<value_type> const &items);
-  array(const array &a);                 // copy
-  array(array &&a) noexcept;             // move
-  array &operator=(array &&a) noexcept;  // moving assingment
+  array(std::initializer_list<value_type> const& items);
+  array(const array& a);                 // copy
+  array(array&& a) noexcept;             // move
+  array& operator=(array&& a) noexcept;  // moving assingment
   ~array();
 
   // методы доступа
@@ -40,7 +40,7 @@ class array {
   size_type max_size() const;
 
   // методы изменения
-  void swap(array &other) noexcept;
+  void swap(array& other) noexcept;
   void fill(const_reference value);
 
  private:

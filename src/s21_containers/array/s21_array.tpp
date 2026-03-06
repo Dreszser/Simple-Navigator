@@ -10,7 +10,7 @@ template <typename T, std::size_t N>
 array<T, N>::array() {}
 
 template <typename T, std::size_t N>
-array<T, N>::array(std::initializer_list<value_type> const &items) {
+array<T, N>::array(std::initializer_list<value_type> const& items) {
   if (items.size() > N) {
     throw std::out_of_range("Initializer list size exceeds array size");
   }
@@ -18,17 +18,17 @@ array<T, N>::array(std::initializer_list<value_type> const &items) {
 }
 
 template <typename T, std::size_t N>
-array<T, N>::array(const array &a) {
+array<T, N>::array(const array& a) {
   std::copy(a.data_, a.data_ + N, data_);
 }
 
 template <typename T, std::size_t N>
-array<T, N>::array(array &&a) noexcept {
+array<T, N>::array(array&& a) noexcept {
   std::move(a.data_, a.data_ + N, data_);
 }
 
 template <typename T, std::size_t N>
-array<T, N> &array<T, N>::operator=(array &&a) noexcept {
+array<T, N>& array<T, N>::operator=(array&& a) noexcept {
   if (this != &a) {
     std::move(a.data_, a.data_ + N, data_);
   }
@@ -106,7 +106,7 @@ typename array<T, N>::size_type array<T, N>::max_size() const {
 
 // методы изменения
 template <typename T, std::size_t N>
-void array<T, N>::swap(array &other) noexcept {
+void array<T, N>::swap(array& other) noexcept {
   std::swap_ranges(data_, data_ + N, other.data_);
 }
 

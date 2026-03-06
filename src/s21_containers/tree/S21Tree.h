@@ -28,9 +28,9 @@ struct Node {
 template <typename T>
 class TreeIterator {
  public:
-  TreeIterator() : currentNode_(nullptr){}; /* Iterator constructor */
+  TreeIterator() : currentNode_(nullptr) {}; /* Iterator constructor */
   TreeIterator(Node<T>* current)
-      : currentNode_(current){}; /* constructor based on existing node */
+      : currentNode_(current) {}; /* constructor based on existing node */
   TreeIterator(const TreeIterator& other); /* Copy constructor */
   TreeIterator(TreeIterator&& other);      /* Move constructor */
 
@@ -65,12 +65,13 @@ class ConstTreeIterator : public TreeIterator<T> {
   using value_type = T;
   using const_reference = const value_type&;
 
-  ConstTreeIterator() : TreeIterator<T>(){};
-  ConstTreeIterator(Node<T>* node) : TreeIterator<T>(node){};
-  ConstTreeIterator(const TreeIterator<T>& iter) : TreeIterator<T>(iter){};
-  ConstTreeIterator(const ConstTreeIterator<T>& iter) : TreeIterator<T>(iter){};
+  ConstTreeIterator() : TreeIterator<T>() {};
+  ConstTreeIterator(Node<T>* node) : TreeIterator<T>(node) {};
+  ConstTreeIterator(const TreeIterator<T>& iter) : TreeIterator<T>(iter) {};
+  ConstTreeIterator(const ConstTreeIterator<T>& iter)
+      : TreeIterator<T>(iter) {};
   ConstTreeIterator(ConstTreeIterator&& iter)
-      : TreeIterator<T>(std::move(iter)){};
+      : TreeIterator<T>(std::move(iter)) {};
 
   ConstTreeIterator& operator=(const ConstTreeIterator& other);
   ConstTreeIterator& operator=(ConstTreeIterator&& other) noexcept;

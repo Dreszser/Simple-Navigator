@@ -12,8 +12,8 @@ class multiset : public set<Key> {
   using key_type = Key;
   using value_type = Key;
   using tree = typename set<Key>::tree;
-  using reference = value_type &;
-  using const_reference = const value_type &;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using iterator = typename tree::iterator;
   using const_iterator = typename tree::const_iterator;
   using size_type = size_t;
@@ -21,26 +21,26 @@ class multiset : public set<Key> {
   /* Constructors */
 
   multiset();
-  multiset(std::initializer_list<value_type> const &items);
-  multiset(const multiset &ms);
-  multiset(multiset &&ms) noexcept;
+  multiset(std::initializer_list<value_type> const& items);
+  multiset(const multiset& ms);
+  multiset(multiset&& ms) noexcept;
 
-  multiset &operator=(multiset &&ms);
-  multiset &operator=(const multiset &ms);
+  multiset& operator=(multiset&& ms);
+  multiset& operator=(const multiset& ms);
 
-  std::pair<iterator, bool> insert(const value_type &value);
-  void merge(multiset &other);
+  std::pair<iterator, bool> insert(const value_type& value);
+  void merge(multiset& other);
 
-  size_type count(const Key &key);
+  size_type count(const Key& key);
 
-  std::pair<iterator, iterator> equal_range(const Key &key);
+  std::pair<iterator, iterator> equal_range(const Key& key);
 
-  iterator lower_bound(const Key &key);
-  iterator upper_bound(const Key &key);
+  iterator lower_bound(const Key& key);
+  iterator upper_bound(const Key& key);
 
   /* Insert many */
   template <class... Args>
-  s21::vector<std::pair<iterator, bool>> insert_many(Args &&...args);
+  s21::vector<std::pair<iterator, bool>> insert_many(Args&&... args);
 };
 }  // namespace s21
 
