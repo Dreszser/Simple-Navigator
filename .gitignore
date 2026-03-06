@@ -60,3 +60,6 @@ bin
 a.txt
 s21_simple_navigator
 test
+
+report
+tests/output
