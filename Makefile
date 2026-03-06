@@ -4,10 +4,12 @@ GCOV_FLAG = --coverage
 
 APP_SRC = src/console_app/*.cc
 APP_INCLUDE = -I src/console_app/.
+BIN_DIR = bin
 APP_EXE = s21_simple_navigator
 
 TEST_SRC = tests/*.cc
 TEST_EXE = test
+TEST_OUTPUT_DIR = tests/output
 
 # BUILD_PATH = ./
 SYSTEM := $(shell uname -s)
@@ -22,6 +24,7 @@ GRAPH_ALG_LIB = src/libraries/s21_graph_algorithms.a
 TSP_SRC = src/libraries/tsp.cc 
 TSP_OBJ = src/libraries/tsp.o
 
+
 ifeq ($(SYSTEM), Linux)
 	OPEN_CMD = xdg-open
 	LTEST = -lgtest -lsubunit -lm -lrt -pthread
@@ -34,12 +37,17 @@ endif
 
 rebuild: clean all
 
-all: test clean_gcovr
+all: gcov_report install
 
-console_app: clean s21_graph s21_graph_algorithms
-	$(CC) $(CFLAGS) $(APP_SRC) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(APP_EXE) $(APP_INCLUDE) $(GRAPH_INCLUDE)
+install: clean s21_graph s21_graph_algorithms
+	mkdir -p $(BIN_DIR)
+	$(CC) $(CFLAGS) $(APP_SRC) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(BIN_DIR)/$(APP_EXE) $(APP_INCLUDE) $(GRAPH_INCLUDE)
+
+uninstall:
+	rm -rf $(BIN_DIR)
 
 test: clean s21_graph_test s21_graph_algorithms_test
+	mkdir -p ${TEST_OUTPUT_DIR}
 	$(CC) $(CFLAGS) $(GCOV_FLAG) $(TEST_SRC) $(LTEST) $(GRAPH_LIB) $(GRAPH_ALG_LIB) -o $(TEST_EXE) $(GRAPH_INCLUDE)
 	./$(TEST_EXE) 
 
@@ -70,9 +78,11 @@ s21_graph_algorithms_test:
 	ranlib $(GRAPH_ALG_LIB)
 
 clean:
-	rm -rf *.o *.g* *.info *.out report *.a *.log gcov* *.dSYM *.a src/libraries/*.o \
-	src/libraries/*.a tests/output/* src/libraries/*.gc* $(APP_EXE) $(TEST_EXE) \
-	*.dot 
+	rm -rf *.o *.g* *.info *.out report *.a *.log gcov* *.dSYM *.a 
+	rm -rf src/libraries/{*.o,*.a,*.gc*}
+	rm -rf $(TEST_OUTPUT_DIR)
+	rm -rf $(BIN_DIR)
+	rm -rf $(TEST_EXE) *.dot
 
 clean_gcovr:
 	rm -rf *.gc* src/libraries/*.gc*
