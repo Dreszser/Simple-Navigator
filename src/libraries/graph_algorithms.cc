@@ -4,11 +4,11 @@ namespace s21 {
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
                                                    int start_vertex) {
-  std::vector<int> distance;
+  std::vector<int> route;
   const size_t size = graph.Size();
   if (size == 0 || start_vertex < 1 ||
       static_cast<size_t>(start_vertex) > size) {
-    return distance;
+    return route;
   }
 
   const auto& matrix = graph.GetAdjecencyMatrix();
@@ -27,7 +27,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
     if (visited[v]) continue;
     visited[v] = true;
 
-    distance.push_back(v + 1);
+    route.push_back(v + 1);
     for (int u = static_cast<int>(size) - 1; u >= 0; --u) {
       if (matrix[v][u] != 0 && !visited[u]) {
         stack.push(u);
@@ -35,16 +35,16 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
     }
   }
 
-  return distance;
+  return route;
 }
 
 std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
                                                      int start_vertex) {
-  std::vector<int> distance;
+  std::vector<int> route;
   const size_t size = graph.Size();
   if (size == 0 || start_vertex < 1 ||
       static_cast<size_t>(start_vertex) > size) {
-    return distance;
+    return route;
   }
 
   const auto& matrix = graph.GetAdjecencyMatrix();
@@ -60,7 +60,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   while (!queue.empty()) {
     int v = queue.front();
     queue.pop();
-    distance.push_back(v + 1);
+    route.push_back(v + 1);
 
     for (size_t u = 0; u < size; ++u) {
       if (matrix[v][u] != 0 && !visited[u]) {
@@ -70,7 +70,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
     }
   }
 
-  return distance;
+  return route;
 }
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
