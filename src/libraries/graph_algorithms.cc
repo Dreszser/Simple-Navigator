@@ -16,21 +16,23 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
   std::vector<bool> visited(size, false);
   s21::Stack<int> stack;
 
-  const int start = start_vertex - 1;
-  stack.push(start);
+  const int start_vertex_index = start_vertex - 1;
+  stack.push(start_vertex_index);
 
   /* DFS algorithm */
   while (!stack.empty()) {
-    int v = stack.top();
+    int vertex_row_index = stack.top();
     stack.pop();
 
-    if (visited[v]) continue;
-    visited[v] = true;
+    if (visited[vertex_row_index]) continue;
+    visited[vertex_row_index] = true;
 
-    route.push_back(v + 1);
-    for (int u = static_cast<int>(size) - 1; u >= 0; --u) {
-      if (matrix[v][u] != 0 && !visited[u]) {
-        stack.push(u);
+    route.push_back(vertex_row_index + 1);
+    for (int vertex_col_index = static_cast<int>(size) - 1;
+         vertex_col_index >= 0; --vertex_col_index) {
+      if (matrix[vertex_row_index][vertex_col_index] != 0 &&
+          !visited[vertex_col_index]) {
+        stack.push(vertex_col_index);
       }
     }
   }
