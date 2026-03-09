@@ -64,7 +64,7 @@ void AntColonyOptimizer::InitializePheromones(size_t size) {
 void AntColonyOptimizer::BuildAntPath(Ant& ant) {
   const size_t size = graph_.Size();
 
-  const auto& matrix = graph_.GetAdjecencyMatrix();
+  const auto& matrix = graph_.GetAdjacencyMatrix();
 
   while (ant.path.size() < size) {
     int next = ChooseNextVertex(ant);
@@ -88,7 +88,7 @@ void AntColonyOptimizer::BuildAntPath(Ant& ant) {
 int AntColonyOptimizer::ChooseNextVertex(const Ant& ant) {
   std::vector<int> candidates;
   std::vector<double> probabilities;
-  const auto& matrix = graph_.GetAdjecencyMatrix();
+  const auto& matrix = graph_.GetAdjacencyMatrix();
 
   for (size_t i = 0; i < graph_.Size(); ++i) {
     if (!ant.visited[i] && matrix[ant.current][i] > 0) {
@@ -160,7 +160,7 @@ double AntColonyOptimizer::Random01() {
 
 bool TspValidator::IsTourValid(const s21::Graph& graph,
                                const TsmResult& result) {
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
   const size_t size = graph.Size();
 
   if ((result.vertices.size() != size + 1) ||

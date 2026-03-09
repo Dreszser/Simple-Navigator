@@ -87,7 +87,7 @@ bool Graph::ValidateGraph(const std::vector<std::vector<int>>& adj_matrix) {
   return true;
 }
 
-const std::vector<std::vector<int>>& Graph::GetAdjecencyMatrix() const {
+const std::vector<std::vector<int>>& Graph::GetAdjacencyMatrix() const {
   return adjacency_matrix_;
 }
 

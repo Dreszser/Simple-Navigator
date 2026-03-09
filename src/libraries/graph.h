@@ -14,7 +14,7 @@ class Graph {
   bool ExportGraphToDot(const std::string& filename);
 
   size_t Size() const;
-  const std::vector<std::vector<int>>& GetAdjecencyMatrix() const;
+  const std::vector<std::vector<int>>& GetAdjacencyMatrix() const;
 
  private:
   std::vector<std::vector<int>> adjacency_matrix_;

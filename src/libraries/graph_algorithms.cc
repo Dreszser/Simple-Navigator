@@ -11,7 +11,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
     return route;
   }
 
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
 
   std::vector<bool> visited(size, false);
   s21::Stack<int> stack;
@@ -47,7 +47,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
     return route;
   }
 
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
 
   std::vector<bool> visited(size, false);
   s21::Queue<int> queue;
@@ -85,7 +85,7 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
   using Distance = long long;
   const Distance INF = 1e18;
 
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
 
   const int start = vertex1 - 1;
   const int finish = vertex2 - 1;
@@ -133,7 +133,7 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) {
 
   std::vector<std::vector<Distance>> distance(size,
                                               std::vector<Distance>(size, INF));
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
 
   /* initialization of distance matrix */
   for (size_t i = 0; i < size; ++i) {
@@ -177,7 +177,7 @@ std::vector<std::vector<long long>> GraphAlgorithms::GetLeastSpanningTree(
     return {};
   }
 
-  const auto& matrix = graph.GetAdjecencyMatrix();
+  const auto& matrix = graph.GetAdjacencyMatrix();
 
   std::vector<bool> visited(size, false);
   std::vector<Distance> dist(size, INF);

@@ -55,7 +55,7 @@ TEST(GraphLoader, MatrixIsLoadedCorrectly) {
   ASSERT_TRUE(
       graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
 
-  const auto& m = graph.GetAdjecencyMatrix();
+  const auto& m = graph.GetAdjacencyMatrix();
   ASSERT_EQ(graph.Size(), 3u);
   EXPECT_EQ(m[0][1], 1);
   EXPECT_EQ(m[1][2], 3);
