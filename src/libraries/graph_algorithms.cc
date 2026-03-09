@@ -52,20 +52,24 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
   std::vector<bool> visited(size, false);
   s21::Queue<int> queue;
 
-  const int start = start_vertex - 1;
-  visited[start] = true;
-  queue.push(start);
+  const int start_vertex_index = start_vertex - 1;
+  visited[start_vertex_index] = true;
+  queue.push(start_vertex_index);
 
   /* BFS algorithm */
   while (!queue.empty()) {
-    int v = queue.front();
+    int vertex_row_index = queue.front();
     queue.pop();
-    route.push_back(v + 1);
 
-    for (size_t u = 0; u < size; ++u) {
-      if (matrix[v][u] != 0 && !visited[u]) {
-        visited[u] = true;
-        queue.push(static_cast<int>(u));
+    int vertex_label = vertex_row_index + 1;
+    route.push_back(vertex_label);
+
+    for (size_t vertex_col_index = 0; vertex_col_index < size;
+         ++vertex_col_index) {
+      if (matrix[vertex_row_index][vertex_col_index] != 0 &&
+          !visited[vertex_col_index]) {
+        visited[vertex_col_index] = true;
+        queue.push(static_cast<int>(vertex_col_index));
       }
     }
   }
