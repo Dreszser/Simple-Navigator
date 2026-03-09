@@ -93,37 +93,48 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(const Graph& graph,
 
   const auto& matrix = graph.GetAdjacencyMatrix();
 
-  const int start = vertex1 - 1;
-  const int finish = vertex2 - 1;
+  const size_t start_vertex_index = vertex1 - 1;
+  const size_t finish_vertex_index = vertex2 - 1;
 
   /* trying to prevent possible overflow */
   std::vector<Distance> distance(size, INF);
   std::vector<bool> visited(size, false);
 
-  distance[start] = 0;
+  distance[start_vertex_index] = 0;
 
   /* Dijkstra's algorithm */
   for (size_t i = 0; i < size; ++i) {
-    int v = -1;
-    for (size_t j = 0; j < size; ++j) {
-      if (!visited[j] && (v == -1 || distance[j] < distance[v])) {
-        v = static_cast<int>(j);
-      }
-    }
-    if (v == -1 || distance[v] == INF) break;
+    int current = FindNearestUnvisitedVertex(distance, visited);
+    if (current == -1 || distance[current] == INF) break;
 
-    visited[v] = true;
+    visited[current] = true;
 
-    for (size_t u = 0; u < size; ++u) {
-      if (!visited[u] && matrix[v][u] > 0) {
-        distance[u] = std::min(distance[v] + matrix[v][u], distance[u]);
+    for (size_t neighbor = 0; neighbor < size; ++neighbor) {
+      if (!visited[neighbor] && matrix[current][neighbor] > 0) {
+        const Distance candidate =
+            distance[current] + matrix[current][neighbor];
+        distance[neighbor] = std::min(candidate, distance[neighbor]);
       }
     }
   }
-  if (distance[finish] > std::numeric_limits<int>::max()) {
+
+  if (distance[finish_vertex_index] > std::numeric_limits<int>::max())
     return -1;
+  return (distance[finish_vertex_index] == INF) ? -1
+                                                : distance[finish_vertex_index];
+}
+
+int GraphAlgorithms::FindNearestUnvisitedVertex(
+    const std::vector<long long>& distance, const std::vector<bool>& visited) {
+  int nearest_vertex_index = -1;
+  for (size_t vertex_index = 0; vertex_index < distance.size();
+       ++vertex_index) {
+    if (!visited[vertex_index] &&
+        (nearest_vertex_index == -1 ||
+         distance[vertex_index] < distance[nearest_vertex_index]))
+      nearest_vertex_index = static_cast<int>(vertex_index);
   }
-  return (distance[finish] == INF) ? -1 : distance[finish];
+  return nearest_vertex_index;
 }
 
 std::vector<std::vector<long long>>

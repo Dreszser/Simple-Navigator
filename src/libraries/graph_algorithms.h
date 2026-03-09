@@ -27,6 +27,9 @@ class GraphAlgorithms {
   static std::vector<std::vector<long long>> CreateMSTAdjacencyMatrix(
       size_t size, const std::vector<std::vector<int>>& matrix,
       const std::vector<int>& parent);
+
+  static int FindNearestUnvisitedVertex(const std::vector<long long>& distance,
+                                        const std::vector<bool>& visited);
 };
 
 }  // namespace s21
