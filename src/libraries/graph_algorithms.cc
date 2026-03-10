@@ -201,19 +201,20 @@ std::vector<std::vector<long long>> GraphAlgorithms::GetLeastSpanningTree(
   dist[0] = 0; /* starting from the first node */
 
   for (size_t n = 0; n < size; ++n) {
-    int v = FindNearestUnvisitedVertex(dist, visited);
+    int current = FindNearestUnvisitedVertex(dist, visited);
 
     /* if the graph is disconnected */
-    if (v == -1 || dist[v] == INF) {
+    if (current == -1 || dist[current] == INF) {
       return {};
     }
 
-    visited[v] = true;
+    visited[current] = true;
 
-    for (size_t u = 0; u < size; ++u) {
-      if (!visited[u] && matrix[v][u] > 0 && matrix[v][u] < dist[u]) {
-        dist[u] = matrix[v][u];
-        parent[u] = v;
+    for (size_t neighbor = 0; neighbor < size; ++neighbor) {
+      if (!visited[neighbor] && matrix[current][neighbor] > 0 &&
+          matrix[current][neighbor] < dist[neighbor]) {
+        dist[neighbor] = matrix[current][neighbor];
+        parent[neighbor] = current;
       }
     }
   }
