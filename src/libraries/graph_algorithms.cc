@@ -21,18 +21,16 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(const Graph& graph,
 
   /* DFS algorithm */
   while (!stack.empty()) {
-    int vertex_row_index = stack.top();
+    int current = stack.top();
     stack.pop();
 
-    if (visited[vertex_row_index]) continue;
-    visited[vertex_row_index] = true;
+    if (visited[current]) continue;
+    visited[current] = true;
 
-    route.push_back(vertex_row_index + 1);
-    for (int vertex_col_index = static_cast<int>(size) - 1;
-         vertex_col_index >= 0; --vertex_col_index) {
-      if (matrix[vertex_row_index][vertex_col_index] != 0 &&
-          !visited[vertex_col_index]) {
-        stack.push(vertex_col_index);
+    route.push_back(current + 1);
+    for (int neighbor = static_cast<int>(size) - 1; neighbor >= 0; --neighbor) {
+      if (matrix[current][neighbor] != 0 && !visited[neighbor]) {
+        stack.push(neighbor);
       }
     }
   }
@@ -60,18 +58,16 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(const Graph& graph,
 
   /* BFS algorithm */
   while (!queue.empty()) {
-    int vertex_row_index = queue.front();
+    int current = queue.front();
     queue.pop();
 
-    int vertex_label = vertex_row_index + 1;
+    int vertex_label = current + 1;
     route.push_back(vertex_label);
 
-    for (size_t vertex_col_index = 0; vertex_col_index < size;
-         ++vertex_col_index) {
-      if (matrix[vertex_row_index][vertex_col_index] != 0 &&
-          !visited[vertex_col_index]) {
-        visited[vertex_col_index] = true;
-        queue.push(static_cast<int>(vertex_col_index));
+    for (size_t neighbor = 0; neighbor < size; ++neighbor) {
+      if (matrix[current][neighbor] != 0 && !visited[neighbor]) {
+        visited[neighbor] = true;
+        queue.push(static_cast<int>(neighbor));
       }
     }
   }
