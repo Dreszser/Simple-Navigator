@@ -16,44 +16,38 @@ std::string ReadFile(const std::string& path) {
 
 TEST(GraphLoader, ValidGraphLoadsSuccessfully1) {
   Graph graph;
-  EXPECT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
+  EXPECT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
 }
 
 TEST(GraphLoader, ValidGraphLoadsSuccessfully2) {
   Graph graph;
-  EXPECT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_2.txt"));
+  EXPECT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_2.txt"));
 }
 
 TEST(GraphLoader, NonSymmetricGraphFails) {
   Graph graph;
-  EXPECT_FALSE(graph.LoadGraphFromFile(
-      "tests/data/invalid_non_symmetric.txt"));
+  EXPECT_FALSE(graph.LoadGraphFromFile("tests/data/invalid_non_symmetric.txt"));
 }
 
 TEST(GraphLoader, NegativeWeightFails) {
   Graph graph;
-  EXPECT_FALSE(graph.LoadGraphFromFile(
-      "tests/data/invalid_negative_weight.txt"));
+  EXPECT_FALSE(
+      graph.LoadGraphFromFile("tests/data/invalid_negative_weight.txt"));
 }
 
 TEST(GraphLoader, EmptyGraphFails) {
   Graph graph;
-  EXPECT_FALSE(
-      graph.LoadGraphFromFile("tests/data/invalid_empty_graph.txt"));
+  EXPECT_FALSE(graph.LoadGraphFromFile("tests/data/invalid_empty_graph.txt"));
 }
 
 TEST(GraphLoader, TruncatedFileFails) {
   Graph graph;
-  EXPECT_FALSE(
-      graph.LoadGraphFromFile("tests/data/invalid_truncated.txt"));
+  EXPECT_FALSE(graph.LoadGraphFromFile("tests/data/invalid_truncated.txt"));
 }
 
 TEST(GraphLoader, MatrixIsLoadedCorrectly) {
   Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
+  ASSERT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
 
   const auto& m = graph.GetAdjacencyMatrix();
   ASSERT_EQ(graph.Size(), 3u);
@@ -68,8 +62,7 @@ TEST(GraphLoader, WrongFile) {
 
 TEST(GraphExport, SimpleGraphExport1) {
   Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
+  ASSERT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
 
   const std::string output = "tests/output/simple1.dot";
   ASSERT_TRUE(graph.ExportGraphToDot(output));
@@ -88,8 +81,7 @@ TEST(GraphExport, SimpleGraphExport1) {
 
 TEST(GraphExport, SimpleGraphExport2) {
   Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_2.txt"));
+  ASSERT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_2.txt"));
 
   const std::string output = "tests/output/simple2.dot";
   ASSERT_TRUE(graph.ExportGraphToDot(output));
@@ -106,8 +98,7 @@ TEST(GraphExport, SimpleGraphExport2) {
 
 TEST(GraphExport, InvalidPathFails) {
   Graph graph;
-  ASSERT_TRUE(
-      graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
+  ASSERT_TRUE(graph.LoadGraphFromFile("tests/data/valid_graph_1.txt"));
 
   EXPECT_FALSE(graph.ExportGraphToDot("/invalid/path/out.dot"));
 }

@@ -98,10 +98,10 @@ gcov_report: test
 # ================= UTILITIES =================
 
 style:
-	find . -name "*.cpp" -o -name "*.h" | xargs clang-format --style=google -i
+	find . -name "*.cc" -o -name "*.h" | xargs clang-format --style=google -i
 
 style_check:
-	find . -name "*.cpp" -o -name "*.h" | xargs clang-format --style=google -n
+	find . -name "*.cc" -o -name "*.h" | xargs clang-format --style=google -n
 
 clean:
 	rm -rf $(BUILD_DIR)
