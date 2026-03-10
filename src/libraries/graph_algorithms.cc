@@ -149,31 +149,33 @@ GraphAlgorithms::GetShortestPathsBetweenAllVertices(const Graph& graph) {
   const auto& matrix = graph.GetAdjacencyMatrix();
 
   /* initialization of distance matrix */
-  for (size_t i = 0; i < size; ++i) {
-    for (size_t j = 0; j < size; ++j) {
-      if (i == j)
-        distance[i][j] = 0;
-      else if (matrix[i][j] > 0)
-        distance[i][j] = matrix[i][j];
+  // 0 in matrix means it costs nothing to reach yourself
+  // unreachable pairs stay INF (as opposed to 0 in adjacency)
+  for (size_t row_idx = 0; row_idx < size; ++row_idx) {
+    for (size_t col_idx = 0; col_idx < size; ++col_idx) {
+      if (row_idx == col_idx)
+        distance[row_idx][col_idx] = 0;
+      else if (matrix[row_idx][col_idx] > 0)
+        distance[row_idx][col_idx] = matrix[row_idx][col_idx];
     }
   }
+
   /* Floyd-Warshall algorithm */
-  for (size_t k = 0; k < size; ++k) {
-    for (size_t i = 0; i < size; ++i) {
-      for (size_t j = 0; j < size; ++j) {
-        if (distance[i][k] < INF && distance[k][j] < INF) {
-          distance[i][j] =
-              std::min(distance[i][j], distance[i][k] + distance[k][j]);
+  for (size_t via = 0; via < size; ++via) {
+    for (size_t row_idx = 0; row_idx < size; ++row_idx) {
+      for (size_t col_idx = 0; col_idx < size; ++col_idx) {
+        if (distance[row_idx][via] < INF && distance[via][col_idx] < INF) {
+          distance[row_idx][col_idx] =
+              std::min(distance[row_idx][col_idx],
+                       distance[row_idx][via] + distance[via][col_idx]);
         }
       }
     }
   }
   /* cleaning up infinities */
-  for (size_t i = 0; i < size; ++i) {
-    for (size_t j = 0; j < size; ++j) {
-      if (distance[i][j] == INF) {
-        distance[i][j] = 0;
-      }
+  for (size_t row_idx = 0; row_idx < size; ++row_idx) {
+    for (size_t col_idx = 0; col_idx < size; ++col_idx) {
+      if (distance[row_idx][col_idx] == INF) distance[row_idx][col_idx] = 0;
     }
   }
   return distance;
