@@ -201,13 +201,8 @@ std::vector<std::vector<long long>> GraphAlgorithms::GetLeastSpanningTree(
   dist[0] = 0; /* starting from the first node */
 
   for (size_t n = 0; n < size; ++n) {
-    int v = -1;
-    /* looking for a node with the least distance */
-    for (size_t i = 0; i < size; ++i) {
-      if (!visited[i] && (v == -1 || dist[v] > dist[i])) {
-        v = static_cast<int>(i);
-      }
-    }
+    int v = FindNearestUnvisitedVertex(dist, visited);
+
     /* if the graph is disconnected */
     if (v == -1 || dist[v] == INF) {
       return {};
