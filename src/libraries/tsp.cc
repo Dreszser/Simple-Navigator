@@ -22,7 +22,8 @@ TsmResult AntColonyOptimizer::Solve() {
       UpdateBestPath(ant, &result);
     }
 
-    EvaporateAndDepositPheromones(ants);
+    EvaporatePheromones();
+    DepositPheromones(ants);
   }
 
   if (result.vertices.empty()) {
@@ -129,10 +130,8 @@ void AntColonyOptimizer::UpdateBestPath(const Ant& ant, TsmResult* result) {
   }
 }
 
-void AntColonyOptimizer::EvaporateAndDepositPheromones(
-    const std::vector<Ant>& ants) {
+void AntColonyOptimizer::EvaporatePheromones() {
   const size_t size = graph_.Size();
-  // испарение
   for (size_t i = 0; i < size; ++i) {
     for (size_t j = 0; j < size; ++j) {
       pheromones_[i][j] *= (1.0 - params_.evaporation);
@@ -140,8 +139,10 @@ void AntColonyOptimizer::EvaporateAndDepositPheromones(
         pheromones_[i][j] = params_.min_pheromone;
     }
   }
+}
 
-  // добавление феромонов
+void AntColonyOptimizer::DepositPheromones(const std::vector<Ant>& ants) {
+  const size_t size = graph_.Size();
   for (const auto& ant : ants) {
     if (ant.path.size() != size + 1) continue;  // неполный путь
     for (size_t i = 0; i < ant.path.size() - 1; ++i) {

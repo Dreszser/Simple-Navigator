@@ -48,7 +48,8 @@ class AntColonyOptimizer {
   void BuildAntPath(Ant& ant);
   int ChooseNextVertex(const Ant& ant);
   void UpdateBestPath(const Ant& ant, TsmResult* best);
-  void EvaporateAndDepositPheromones(const std::vector<Ant>& ants);
+  void EvaporatePheromones();
+  void DepositPheromones(const std::vector<Ant>& ants);
   double Random01();
 };
 
